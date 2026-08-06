@@ -13,13 +13,22 @@ if [ -f "$CHANGELOG" ]; then
   mkdir -p "$SNAPSHOT_DIR"
 
   if [ -f "$SNAPSHOT" ]; then
-    new_lines=$(diff "$SNAPSHOT" "$CHANGELOG" 2>/dev/null | grep '^> ' | sed 's/^> //' | grep -v '^[[:space:]]*$')
+    new_lines=$(diff "$SNAPSHOT" "$CHANGELOG" 2>/dev/null | grep '^> ' | sed 's/^> //; s/^- //' | grep -v '^[[:space:]]*$')
     if [ -n "$new_lines" ]; then
-      echo ""
-      echo "=== JipMunSeo 위키 업데이트 ==="
-      echo "$new_lines" | sed 's/^/  /'
-      echo "(전체 내역: $CHANGELOG)"
-      echo ""
+      c_reset=$'\033[0m'
+      c_rule=$'\033[38;5;73m'
+      c_title=$'\033[1;38;5;117m'
+      c_bullet=$'\033[38;5;150m'
+      c_dim=$'\033[2;38;5;245m'
+      rule="${c_rule}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${c_reset}"
+
+      printf "\n%b\n" "$rule"
+      printf "%b\n" "${c_title}  📚  JipMunSeo 위키 업데이트${c_reset}"
+      printf "%b\n" "$rule"
+      while IFS= read -r line; do
+        printf "%b\n" "  ${c_bullet}▸${c_reset} ${line}"
+      done <<< "$new_lines"
+      printf "\n%b\n\n" "${c_dim}  전체 내역 → ${CHANGELOG}${c_reset}"
     fi
   fi
 
