@@ -16,6 +16,9 @@ raw/_api-debug/
 .obsidian/workspace.json
 .obsidian/workspace-mobile.json
 
+# local CLI state (MOTD snapshot etc.) — machine-local, not curated content
+.local/
+
 # editors / os
 .vscode/*
 !.vscode/extensions.json
