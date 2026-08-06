@@ -1,0 +1,6 @@
+{
+  "userIgnoreFilters": [
+    ".git",
+    "raw/_api-debug"
+  ]
+}

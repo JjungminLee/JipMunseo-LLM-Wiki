@@ -1,14 +1,20 @@
-# frontend
-frontend/node_modules/
-frontend/dist/
-frontend/.vite/
+# private case data — personal financial/residential info, never commit
+# (see case/README.md and SCHEMA.md §0)
+case/profile.md
+case/case-index.md
+case/cases/*.md
+case/archived/*.md
+case/fieldnotes/*.md
+!case/cases/.gitkeep
+!case/archived/.gitkeep
+!case/fieldnotes/.gitkeep
 
-# backend
-backend/.venv/
-backend/__pycache__/
-backend/**/__pycache__/
-backend/.pytest_cache/
-backend/.env
+# batch sync debug dumps — raw, unverified API responses, not curated raw/ sources
+raw/_api-debug/
+
+# Obsidian — keep shareable config, drop personal UI/session state
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
 
 # editors / os
 .vscode/*

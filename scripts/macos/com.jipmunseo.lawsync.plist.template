@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.jipmunseo.lawsync</string>
+
+  <!-- python3 경로는 `which python3`로 확인 (보통 /usr/bin/python3, Xcode Command Line
+       Tools에 기본 포함 — brew 설치 불필요) -->
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/bin/python3</string>
+    <string>/Users/YOUR_USERNAME/JipMunseo-LLM-Wiki/scripts/macos/sync_laws.py</string>
+    <string>--commit</string>
+  </array>
+
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>LAW_API_OC</key>
+    <string>YOUR_OC_KEY</string>
+  </dict>
+
+  <!-- Weekday: 0/7=일, 1=월, ... 6=토. 매주 월요일 오전 9시 -->
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Weekday</key>
+    <integer>1</integer>
+    <key>Hour</key>
+    <integer>9</integer>
+    <key>Minute</key>
+    <integer>0</integer>
+  </dict>
+
+  <key>StandardOutPath</key>
+  <string>/tmp/jipmunseo-lawsync.log</string>
+  <key>StandardErrorPath</key>
+  <string>/tmp/jipmunseo-lawsync.err.log</string>
+</dict>
+</plist>

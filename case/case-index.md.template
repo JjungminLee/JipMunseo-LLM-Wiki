@@ -1,0 +1,12 @@
+# Case Index
+
+진행 중/종료된 모든 케이스의 대시보드. `query`/`notify` 시 `profile.md`와 함께 항상 로드되는
+"컨텍스트 앵커"다. 프론트매터 스키마는 [SCHEMA.md §6](../SCHEMA.md#6-케이스-타입-taxonomy) 참고.
+
+## 진행 중
+
+_(케이스 없음)_
+
+## 종료 (archived)
+
+_(케이스 없음)_
