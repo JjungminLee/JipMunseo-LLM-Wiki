@@ -1,6 +1,8 @@
 ---
 title: GTX-B 노선
 category: 지역개발계획
+cssclasses:
+  - cat-지역개발계획
 관련_case_types: []
 관련_profile_fields: []
 최종확인일: 2026-08-07

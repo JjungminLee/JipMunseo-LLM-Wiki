@@ -6,6 +6,13 @@
 
 ## 시작하는 법
 
+Obsidian이라면 커맨드 팔레트(`Ctrl/Cmd+P`) → **"Templater: Create 온보딩"** 실행 — 몇 가지 질문에
+답하면 `profile.md`/`case-index.md`가 자동 생성된다 (`_templates/온보딩.md`). **몇 번을 다시
+실행해도 안전** — 이미 채워진 필드는 다시 안 물어보고 빈 항목만 채운다. 매수 이력을 추가할 땐
+아파트명·지역만 입력하면 국토교통부 실거래가 API로 가격을 자동 조회한다 (`DATA_GO_KR_KEY` 설정
+필요 — [scripts/README.md](../scripts/README.md) 참고, 없으면 수동 입력으로 자동 전환). CLI로만
+쓴다면:
+
 ```
 cp case/profile.md.template case/profile.md
 cp case/case-index.md.template case/case-index.md

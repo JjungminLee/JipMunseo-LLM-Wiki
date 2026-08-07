@@ -1,5 +1,45 @@
 # scripts/
 
+## API 키 저장 방식 — 환경변수 또는 `.local/api-keys.json`
+
+이 프로젝트가 쓰는 외부 API 인증키(법제처 `LAW_API_OC`, 공공데이터포털 `DATA_GO_KR_KEY`)는
+**절대 vault의 git 추적 파일(profile.md 등)에 저장하지 않는다.** 아래 둘 중 하나로 등록:
+
+1. **환경변수** (기존 방식, 아래 각 섹션 참고) — PowerShell/Python 스크립트를 CLI에서 직접
+   돌릴 때는 이게 표준.
+2. **`.local/api-keys.json`** — Obsidian에서 "Templater: Create 온보딩"을 실행하면 키가 없을 때
+   자동으로 물어보고 이 파일에 저장한다(`{"LAW_API_OC": "...", "DATA_GO_KR_KEY": "..."}`).
+   `.local/`은 `.gitignore` 대상이라 git에 절대 안 올라간다. 한 번 저장해두면 다음 실행부터는
+   안 물어보고, `sync-laws.ps1`도 환경변수가 없으면 이 파일을 자동으로 폴백 조회한다 — 즉
+   **키는 한 기기당 딱 한 번만 입력하면 Obsidian이든 PowerShell 배치든 공유해서 쓴다.**
+
+이미 이 파일이 있는데 키를 바꾸고 싶으면 직접 열어서 수정하거나 지우고 다시 물어보게 하면 된다.
+
+## 온보딩 — 실거래가 자동조회 (DATA_GO_KR_KEY)
+
+`_templates/온보딩.md`(Templater, 커맨드 팔레트 → "Templater: Create 온보딩")에서 매수 이력을
+입력할 때, 아파트명·지역만 넣으면 국토교통부 공공데이터포털 API로 실거래가를 자동으로
+찾아 채운다. 별도 스크립트 실행이 아니라 Templater 안에서 직접 HTTP 요청을 보내는 방식이다.
+
+1. https://www.data.go.kr 회원가입 후 아래 두 API에 각각 "활용신청" (보통 1~2시간 내 자동승인):
+   - [행정표준코드_법정동코드](https://www.data.go.kr/data/15077871/openapi.do)
+   - [국토교통부_아파트 매매 실거래가 자료](https://www.data.go.kr/data/15126469/openapi.do)
+2. 발급받은 인증키 중 **"일반 인증키(Decoding)"** 값을 등록 — Obsidian에서 온보딩 실행 중
+   물어볼 때 붙여넣거나(`.local/api-keys.json`에 저장됨), 직접 환경변수로:
+   ```powershell
+   [Environment]::SetEnvironmentVariable("DATA_GO_KR_KEY", "발급받은디코딩키", "User")
+   ```
+   (Encoding 키를 쓰면 URL에서 이중 인코딩되어 요청이 실패한다 — 반드시 Decoding 키.
+   환경변수로 등록했다면 Obsidian을 완전히 재시작해야 인식한다.)
+3. 키가 없거나 조회에 실패해도 자동으로 수동 입력으로 넘어가니 없어도 온보딩 자체는 된다.
+
+**필드명 미검증 (2026-08-07, 문서 기반 추정):** `aptNm`/`dealAmount`/`excluUseAr`/`floor`/
+`dealYear`/`dealMonth`/`dealDay`, 법정동코드 API의 `region_cd`/`locatadd_nm`은 공식 문서와
+일반적인 data.go.kr 관례를 근거로 추정한 필드명이다 — 실제 키 발급받아 처음 돌려보고 매칭이
+안 되면 `raw/_api-debug/`에 남는 원본 응답(JSON/XML)을 열어 실제 필드명을 확인하고
+`_templates/온보딩.md`의 `xmlField(item, "aptNm", ...)` 같은 부분에 실제 태그명을 추가한다
+(sync-laws.ps1과 같은 패턴, 이 파일도 `.gitignore` 대상이라 개인 조회 이력이 안 올라감).
+
 ## sync-laws.ps1 — 법령 개정 배치 동기화
 
 `raw/laws/_sources.json`에 등록된 법령·조문을 [법제처 Open API](https://open.law.go.kr)로 조회해
@@ -8,9 +48,11 @@
 ### 1) 최초 설정
 
 1. https://open.law.go.kr 에서 회원가입 후 OC(API 인증키) 무료 발급 (승인까지 보통 1~2일)
-2. 발급받은 키를 환경변수로 등록 (PowerShell 프로필에 넣어두면 매번 안 쳐도 됨):
+2. 발급받은 키를 등록 — Obsidian에서 "Templater: Create 온보딩"을 한 번 실행하면 물어보고
+   `.local/api-keys.json`에 저장해준다(권장, 재부팅 불필요). 아니면 직접 환경변수로:
    ```powershell
    $env:LAW_API_OC = "발급받은ID"
+   # 영구 등록하려면: [Environment]::SetEnvironmentVariable("LAW_API_OC", "발급받은ID", "User")
    ```
 
 ### 2) 수동 실행

@@ -1,18 +1,38 @@
-/* JipMunSeo 부동산 위키 vault 커스텀 스타일
-   - frontmatter 속성을 배지처럼 강조 (category, 시행일, status)
-   - 아직 안 쓰인 위키링크(플레이스홀더)를 점선으로 구분 — SCHEMA.md §3
-   - 콜아웃(> [!TIP]/[!NOTE]/[!WARNING]) 다듬기
+/* JipMunSeo 부동산 위키 vault 커스텀 스타일 — Notion풍 가독성
+   - 카테고리별 파스텔 배지 (wiki 페이지 frontmatter의 cssclasses로 색 결정)
+   - status/시행일 등 나머지 속성도 배지·강조 처리
+   - 위키링크를 노션의 페이지 멘션 칩처럼, 미작성 링크는 점선으로 구분
+   - 콜아웃(> [!TIP]/[!NOTE]/[!WARNING]) · 표 · 본문 줄간격 다듬기
 */
 
-/* --- Properties(frontmatter) 패널 --- */
+/* ============ 카테고리 팔레트 ============
+   각 wiki 페이지 frontmatter에 `cssclasses: [cat-<category값>]`을 추가하면
+   아래 변수가 채워짐. 없는 페이지는 회색 기본값으로 폴백. */
+
+.cat-양도소득세      { --cat-bg: #e7f3ff; --cat-fg: #1a5fb4; }
+.cat-취득세          { --cat-bg: #e3f9e5; --cat-fg: #1e7b34; }
+.cat-종합부동산세     { --cat-bg: #f3e8ff; --cat-fg: #6b21a8; }
+.cat-지역개발계획     { --cat-bg: #fff1e0; --cat-fg: #b45309; }
+.cat-재산세          { --cat-bg: #ffe4ec; --cat-fg: #be185d; }
+.cat-임대주택사업자   { --cat-bg: #e0f7f5; --cat-fg: #0f766e; }
+
+.theme-dark .cat-양도소득세      { --cat-bg: rgba(66, 133, 244, 0.18); --cat-fg: #8ab4f8; }
+.theme-dark .cat-취득세          { --cat-bg: rgba(52, 168, 83, 0.18);  --cat-fg: #81c995; }
+.theme-dark .cat-종합부동산세     { --cat-bg: rgba(168, 85, 247, 0.18); --cat-fg: #c084fc; }
+.theme-dark .cat-지역개발계획     { --cat-bg: rgba(251, 146, 60, 0.18); --cat-fg: #fdba74; }
+.theme-dark .cat-재산세          { --cat-bg: rgba(244, 63, 94, 0.18);  --cat-fg: #fb7185; }
+.theme-dark .cat-임대주택사업자   { --cat-bg: rgba(20, 184, 166, 0.18); --cat-fg: #5eead4; }
+
+/* ============ Properties(frontmatter) 패널 ============ */
 
 .metadata-property[data-property-key="category"] .metadata-property-value {
   display: inline-block;
-  padding: 2px 10px;
-  border-radius: 999px;
-  background: var(--interactive-accent);
-  color: var(--text-on-accent);
+  padding: 3px 11px;
+  border-radius: 6px;
   font-weight: 600;
+  font-size: 0.85em;
+  background: var(--cat-bg, var(--background-modifier-hover));
+  color: var(--cat-fg, var(--text-muted));
 }
 
 .metadata-property[data-property-key="최종개정_시행일"] .metadata-property-value,
@@ -23,10 +43,12 @@
 
 .metadata-property[data-property-key="status"] .metadata-property-value {
   display: inline-block;
-  padding: 2px 10px;
-  border-radius: 999px;
-  background: var(--background-modifier-success);
+  padding: 3px 11px;
+  border-radius: 6px;
   font-weight: 600;
+  font-size: 0.85em;
+  background: color-mix(in srgb, var(--color-green) 18%, transparent);
+  color: var(--color-green);
 }
 
 .metadata-property[data-property-key="type"] .metadata-property-value {
@@ -38,20 +60,69 @@
   font-size: 0.85em;
 }
 
-/* --- 존재하지 않는 위키링크(자리표시자) --- */
+/* ============ 위키링크 — 노션의 "페이지 멘션 칩" 느낌 ============ */
 
+.internal-link:not(.is-unresolved) {
+  padding: 0 4px;
+  border-radius: 4px;
+  background: var(--background-modifier-hover);
+  text-decoration: none;
+  transition: background 0.1s ease;
+}
+
+.internal-link:not(.is-unresolved):hover {
+  background: var(--background-modifier-active-hover);
+}
+
+/* 아직 안 쓰인 위키링크(자리표시자) — SCHEMA.md §3 "존재하지 않는 링크도 허용" */
 .internal-link.is-unresolved {
+  padding: 0 4px;
+  border-radius: 4px;
   border-bottom: 1px dashed var(--text-faint);
+  background: transparent;
   color: var(--text-faint) !important;
   font-style: italic;
 }
 
-/* --- 콜아웃 다듬기 --- */
+/* ============ 콜아웃 ============ */
 
 .callout {
-  border-radius: 8px;
+  border-radius: 10px;
+  padding: 0.85em 1em;
 }
 
 .callout-title {
   font-weight: 700;
+}
+
+/* ============ 표 — 노션 스타일 (얇은 보더 + 헤더 배경) ============ */
+
+.markdown-rendered table {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--background-modifier-border);
+}
+
+.markdown-rendered th {
+  background: var(--background-secondary);
+  font-weight: 600;
+}
+
+.markdown-rendered td,
+.markdown-rendered th {
+  border-color: var(--background-modifier-border);
+}
+
+/* ============ 본문 가독성 ============ */
+
+.markdown-preview-view,
+.markdown-source-view.is-live-preview {
+  line-height: 1.75;
+}
+
+.markdown-rendered h1,
+.markdown-rendered h2,
+.markdown-rendered h3 {
+  margin-top: 1.4em;
+  letter-spacing: -0.01em;
 }

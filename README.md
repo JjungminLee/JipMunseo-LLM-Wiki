@@ -16,6 +16,16 @@ case/    — 본인 profile·케이스·임장기록. private (.gitignore).
 
 ## 시작하는 법
 
+Obsidian에서 이 폴더를 vault로 열고 커뮤니티 플러그인(Dataview/Kanban/Templater) 설치 후,
+**커맨드 팔레트(`Ctrl/Cmd+P`) → "Templater: Create 온보딩"** 을 한 번 실행하면 세대원 구성·소득·
+청약통장 같은 몇 가지 질문에 답하는 것만으로 `case/profile.md` + `case/case-index.md`가
+자동 생성된다. "나중에 채우기"를 선택하면 빈 템플릿만 생성된다. (vault를 열자마자 자동으로
+뜨게 만들 수도 있지만 — Templater의 "Enable startup templates" — 이건 vault 오픈과 동시에
+코드가 실행되는 구조라 일부러 안 켠 채로 둔다. 대신 이렇게 사용자가 직접 커맨드를 눌러
+실행하는 방식은 같은 위험이 없다.)
+
+Obsidian 없이 CLI로만 쓴다면 수동으로:
+
 ```
 cp case/profile.md.template case/profile.md
 cp case/case-index.md.template case/case-index.md
@@ -37,7 +47,7 @@ cp case/case-index.md.template case/case-index.md
 | `LAW_API_OC` 환경변수 (파일 아님) | 법제처 API 인증키, 코드/문서에 박아두지 않음 | 기기별로 새로 설정 — [scripts/README.md](scripts/README.md) 참고 |
 | 작업 스케줄러(Windows) / launchd(macOS) 등록 | OS 레벨 설정이라 git으로 옮겨지지 않음 | 기기별로 새로 등록 — [scripts/README.md](scripts/README.md) 참고 |
 | Obsidian vault 등록 | Obsidian 앱 자체의 전역 설정(레포 밖에 저장됨) | Obsidian에서 이 폴더를 "Open folder as vault"로 새로 열기 |
-| `.obsidian/plugins/*` (Dataview, Kanban, Templater 본체) | 3rd-party 플러그인 바이너리를 public repo에 vendor하지 않음 | Settings → Community plugins → Browse에서 "Dataview"/"Kanban"/"Templater" 검색 후 설치. `community-plugins.json`에 활성화 목록은 이미 커밋돼 있어 설치만 하면 자동 켜짐 |
+| `.obsidian/plugins/*/main.js`, `styles.css` (Dataview, Kanban, Templater 코드 본체) | 3rd-party 플러그인 바이너리를 public repo에 vendor하지 않음 | Settings → Community plugins → Browse에서 "Dataview"/"Kanban"/"Templater" 검색 후 설치. 활성화 목록(`community-plugins.json`)과 설정(`data.json`)은 이미 커밋돼 있어 설치만 하면 그대로 적용됨 |
 
 ## 맥북에서 시작하기
 

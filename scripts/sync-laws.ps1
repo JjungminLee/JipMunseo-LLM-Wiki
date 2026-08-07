@@ -45,9 +45,21 @@ $RepoRoot = Split-Path -Parent $PSScriptRoot
 $ManifestPath = Join-Path $RepoRoot "raw\laws\_sources.json"
 $DebugDir = Join-Path $RepoRoot "raw\_api-debug"
 $ChangelogPath = Join-Path $RepoRoot "CHANGELOG.md"
+$LocalKeysPath = Join-Path $RepoRoot ".local\api-keys.json"
+
+# env var/-OC 파라미터가 없으면 .local/api-keys.json(gitignore 대상, Obsidian "Templater:
+# Create 온보딩"에서도 같은 파일에 저장함)을 폴백으로 시도한다. 둘 중 하나에만 등록해도 됨.
+if (-not $OC -and (Test-Path $LocalKeysPath)) {
+    try {
+        $localKeys = Get-Content $LocalKeysPath -Raw | ConvertFrom-Json
+        if ($localKeys.LAW_API_OC) { $OC = $localKeys.LAW_API_OC }
+    } catch {
+        # 캐시 파일이 깨져 있어도 무시하고 아래 -OC 없음 에러로 자연스럽게 빠짐
+    }
+}
 
 if (-not $OC) {
-    Write-Error "OC 인증키가 없습니다. https://open.law.go.kr 에서 발급받아 `$env:LAW_API_OC = '발급ID'`로 설정하거나 -OC 파라미터로 전달하세요."
+    Write-Error "OC 인증키가 없습니다. https://open.law.go.kr 에서 발급받아 `$env:LAW_API_OC = '발급ID'`로 설정하거나 -OC 파라미터로 전달하세요 (또는 Obsidian에서 Templater: Create 온보딩을 한 번 실행해 .local/api-keys.json에 저장해도 됩니다)."
     exit 1
 }
 
@@ -97,7 +109,13 @@ foreach ($law in $manifest) {
         $debugFile = Join-Path $DebugDir "$($lawName)_$jo.xml"
         $xml.OuterXml | Set-Content -Encoding utf8 $debugFile
 
-        $시행일자 = Get-XmlText $xml "//시행일자"
+        # //시행일자는 <기본정보>의 법 전체 대표 시행일이라 조문마다 시행일이 다른 법(부칙에
+        # 조문별 시행일이 갈리는 경우 흔함)에서는 틀린 값을 캐싱하게 된다. lawjosub 응답은
+        # 조문 자체에 <조문시행일자>를 따로 주므로 그게 있으면 그걸 우선한다 (2026-08-08,
+        # 실제 OC로 응답 구조 확인 — 소득세법 §89는 둘 다 20260101로 같았지만, 부칙에 조문별
+        # 시행일이 다른 법(조문별시행일자문자열에 여러 날짜가 나열됨)에서는 갈릴 수 있음).
+        $조문시행일자 = Get-XmlText $xml "//조문시행일자"
+        $시행일자 = if ($조문시행일자) { $조문시행일자 } else { Get-XmlText $xml "//시행일자" }
         $공포일자 = Get-XmlText $xml "//공포일자"
         $조문내용 = Get-XmlText $xml "//조문내용"
 
