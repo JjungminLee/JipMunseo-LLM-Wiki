@@ -5,6 +5,7 @@ case/case-index.md
 case/cases/*.md
 case/archived/*.md
 case/fieldnotes/*.md
+case/보드.md
 !case/cases/.gitkeep
 !case/archived/.gitkeep
 !case/fieldnotes/.gitkeep
@@ -12,9 +13,13 @@ case/fieldnotes/*.md
 # batch sync debug dumps — raw, unverified API responses, not curated raw/ sources
 raw/_api-debug/
 
-# Obsidian — keep shareable config, drop personal UI/session state
+# Obsidian — keep shareable config (community-plugins.json, snippets, graph
+# color groups), but don't vendor 3rd-party plugin binaries into a public repo
+# or personal UI/session state — install listed plugins via Community Plugins
+# browser instead (scripts/README.md 또는 README.md 표 참고)
 .obsidian/workspace.json
 .obsidian/workspace-mobile.json
+.obsidian/plugins/
 
 # local CLI state (MOTD snapshot etc.) — machine-local, not curated content
 .local/

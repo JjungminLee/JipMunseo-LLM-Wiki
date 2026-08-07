@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(curl -s http://localhost:5173/)"
+      "Bash(curl -s http://localhost:5173/)",
+      "WebSearch",
+      "WebFetch(domain:www.dnews.co.kr)"
     ]
   }
 }

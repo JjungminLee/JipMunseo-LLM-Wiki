@@ -1,0 +1,57 @@
+/* JipMunSeo 부동산 위키 vault 커스텀 스타일
+   - frontmatter 속성을 배지처럼 강조 (category, 시행일, status)
+   - 아직 안 쓰인 위키링크(플레이스홀더)를 점선으로 구분 — SCHEMA.md §3
+   - 콜아웃(> [!TIP]/[!NOTE]/[!WARNING]) 다듬기
+*/
+
+/* --- Properties(frontmatter) 패널 --- */
+
+.metadata-property[data-property-key="category"] .metadata-property-value {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+  font-weight: 600;
+}
+
+.metadata-property[data-property-key="최종개정_시행일"] .metadata-property-value,
+.metadata-property[data-property-key="최종확인일"] .metadata-property-value {
+  font-weight: 700;
+  color: var(--text-accent);
+}
+
+.metadata-property[data-property-key="status"] .metadata-property-value {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--background-modifier-success);
+  font-weight: 600;
+}
+
+.metadata-property[data-property-key="type"] .metadata-property-value {
+  font-weight: 700;
+}
+
+.metadata-property[data-property-key="source_refs"] .metadata-property-value {
+  font-family: var(--font-monospace);
+  font-size: 0.85em;
+}
+
+/* --- 존재하지 않는 위키링크(자리표시자) --- */
+
+.internal-link.is-unresolved {
+  border-bottom: 1px dashed var(--text-faint);
+  color: var(--text-faint) !important;
+  font-style: italic;
+}
+
+/* --- 콜아웃 다듬기 --- */
+
+.callout {
+  border-radius: 8px;
+}
+
+.callout-title {
+  font-weight: 700;
+}
