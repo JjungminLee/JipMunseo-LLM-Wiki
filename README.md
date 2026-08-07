@@ -1,6 +1,5 @@
 # JipMunSeo — 부동산 정책/세법 LLM Wiki Agent
-
-<img width="2816" height="1536" alt="Real Estate Wiki Agent" src="https://github.com/user-attachments/assets/c896179c-2c9b-44d8-b8b3-01ef85a6de8f" />
+![alt text](Gemini_Generated_Image_yaowl9yaowl9yaow.png)
 
 부동산 정책과 세법을 위키처럼 찾아볼 수 있게 하는 개인용 LLM 에이전트. 법령/세법 근거와 실제
 매매·임장 경험에서 나온 인사이트를 구분해서 제공하는 것이 핵심.
