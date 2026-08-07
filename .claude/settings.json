@@ -3,7 +3,10 @@
     "allow": [
       "Bash(curl -s http://localhost:5173/)",
       "WebSearch",
-      "WebFetch(domain:www.dnews.co.kr)"
+      "WebFetch(domain:www.dnews.co.kr)",
+      "Bash(node -e ' *)",
+      "Bash(sort -k6,7)",
+      "Bash(grep -n \"replace\\(/\\\\\\\\\\\\\\\\s/g\" \"_templates/온보딩.md\")"
     ]
   }
 }

@@ -17,7 +17,7 @@ case/    — 본인 profile·케이스·임장기록. private (.gitignore).
 ## 시작하는 법
 
 Obsidian에서 이 폴더를 vault로 열고 커뮤니티 플러그인(Dataview/Kanban/Templater) 설치 후,
-**커맨드 팔레트(`Ctrl/Cmd+P`) → "Templater: Create 온보딩"** 을 한 번 실행하면 세대원 구성·소득·
+**커맨드 팔레트(`Ctrl/Cmd+P`) → "Templater: Insert 온보딩"** 을 한 번 실행하면 세대원 구성·소득·
 청약통장 같은 몇 가지 질문에 답하는 것만으로 `case/profile.md` + `case/case-index.md`가
 자동 생성된다. "나중에 채우기"를 선택하면 빈 템플릿만 생성된다. (vault를 열자마자 자동으로
 뜨게 만들 수도 있지만 — Templater의 "Enable startup templates" — 이건 vault 오픈과 동시에
